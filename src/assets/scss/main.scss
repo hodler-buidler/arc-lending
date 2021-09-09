@@ -1,0 +1,15 @@
+@import './modules/colors';
+@import './modules/typography';
+
+html * {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: var(--app-base-font-size);
+  color: var(--app-text-color);
+  background: var(--app-bg-color);
+  font-family: sans-serif;
+  line-height: 22px;
+  font-weight: 400;
+}

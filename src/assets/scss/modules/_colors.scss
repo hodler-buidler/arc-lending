@@ -1,0 +1,15 @@
+html {
+  --dark-color-1: rgba(7, 5, 15, 1);
+  --dark-color-2: rgba(32,30,39, 1);
+
+  --red-color-1: rgba(224,47,65, 1);
+
+  --secondary-color: rgba(255, 255, 255, 0.5);
+  --alternative-color: rgba(255, 255, 255, 1);
+  --danger-color: var(--red-color-1);
+
+  --app-bg-color: var(--dark-color-1);
+  --app-text-color: var(--secondary-color);
+  --app-default-link-color: rgba(255, 255, 255, 0.3);
+  --app-default-active-link-color: var(--alternative-color);
+}

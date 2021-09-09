@@ -1,0 +1,1 @@
+export { default as AppWrapperStyled } from './AppWrapperStyled';
