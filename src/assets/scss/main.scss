@@ -5,11 +5,15 @@ html * {
   box-sizing: border-box;
 }
 
+::selection {
+  background: var(--app-selection-color);
+}
+
 body {
   font-size: var(--app-base-font-size);
   color: var(--app-text-color);
   background: var(--app-bg-color);
+  line-height: var(--app-base-line-height);
   font-family: sans-serif;
-  line-height: 22px;
   font-weight: 400;
 }
