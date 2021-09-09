@@ -6,3 +6,6 @@ export { default as UiLink } from './UiLink/UiLink';
 
 export type { UiFieldProps } from './UiField/UiField';
 export { default as UiField } from './UiField/UiField';
+
+export type { UiButtonProps } from './UiButton/UiButton';
+export { default as UiButton } from './UiButton/UiButton';

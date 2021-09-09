@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
-import { UiField } from '@components/ui/index';
+import { UiField, UiButton } from '@components/ui/index';
+import BorrowDetails from './components/BorrowDetails/BorrowDetails';
 
 const BorrowInterface: FC = () => {
   const [ collateralAmount, setCollateralAmount ] = useState('0');
@@ -39,6 +40,22 @@ const BorrowInterface: FC = () => {
             </div>
           </UiField>
         </div>
+
+        <div className="borrow-interface__footer">
+          <BorrowInterfaceFooterStyled>
+            <div className="details">
+              <BorrowDetails
+                currentLTVRatio={25}
+                maxLTVRatio={50}
+                ethPriceUSD={1000}
+              />
+            </div>
+
+            <div>
+              <UiButton theme="primary">Initiate borrow</UiButton>
+            </div>
+          </BorrowInterfaceFooterStyled>
+        </div>
       </div>
     </BorrowInterfaceWrapperStyled>
   ); 
@@ -57,6 +74,19 @@ const BorrowInterfaceWrapperStyled = styled.div`
         margin-bottom: 0;
       }
     }
+
+    &__footer {
+      margin-top: 22px;
+    }
+  }
+`;
+
+const BorrowInterfaceFooterStyled = styled.div`
+  background: var(--dark-color-5);
+  border-radius: 12px;
+
+  & .details {
+    padding: 22px;
   }
 `;
 

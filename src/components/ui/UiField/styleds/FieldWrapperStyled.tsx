@@ -14,11 +14,11 @@ const FieldWrapperStyled = styled.div<{
   padding: 0 16px;
   transition: 0.2s all;
 
-  ${({ disabled }) => disabled && `
+  ${({ disabled }) => disabled ? `
     &, & * {
       cursor: not-allowed;
     }
-  `}
+  ` : ``}
 
   ${({ invalid }) => invalid ? `
     border-color: var(--danger-color);

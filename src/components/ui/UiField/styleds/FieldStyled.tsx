@@ -11,14 +11,15 @@ const FieldStyled = styled.input<{
   font-weight: 500;
   outline: none;
   border: none;
+  width: 100%;
 
-  ${({ disabled, viewOnly }) => (disabled || viewOnly) && `
+  ${({ disabled, viewOnly }) => (disabled || viewOnly) ? `
     color: var(--dark-color-4);
-  `}
+  ` : ``}
 
-  ${({ viewOnly }) => viewOnly && `
+  ${({ viewOnly }) => viewOnly ? `
     cursor: text;
-  `}
+  ` : ``}
 
   &::placeholder {
     color: var(--dark-color-2);

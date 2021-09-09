@@ -5,7 +5,7 @@ import TheHeader from '@components/TheHeader/TheHeader';
 import TheFooter from '@components/TheFooter/TheFooter';
 
 import Routing from './Routing';
-import { AppWrapperStyled } from './styleds/index';
+import { AppWrapperStyled, AppContentStyled } from './styleds/index';
 
 function App() {
   return (
@@ -14,9 +14,9 @@ function App() {
         <TheHeader />
       </div>
 
-      <div>
+      <AppContentStyled>
         <Routing />
-      </div>
+      </AppContentStyled>
 
       <div>
         <TheFooter />
