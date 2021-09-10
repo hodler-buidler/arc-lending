@@ -10,6 +10,9 @@ module.exports = {
         '@typings': resolvePath('./src/typings'),
         '@utils': resolvePath('./src/utils'),
         '@pages': resolvePath('./src/pages'),
+        '@state': resolvePath('./src/state'),
+        '@config': resolvePath('./src/config'),
+        '@logic': resolvePath('./src/logic'),
       },
   },
 }

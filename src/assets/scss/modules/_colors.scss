@@ -9,9 +9,19 @@ html {
 
   --red-color-1: rgba(224,47,65, 1);
 
+  --blue-color-1-rgb-string: 3,136,252;
+  --blue-color-1: rgba(var(--blue-color-1-rgb-string), 1);
+
+  --green-color-1: rgba(49,196,66, 1);
+
+  --orange-color-1: rgba(245,152,39, 1);
+
   --secondary-color: rgba(255, 255, 255, 0.5);
   --alternative-color: rgba(255, 255, 255, 1);
   --danger-color: var(--red-color-1);
+  --info-color: var(--blue-color-1);
+  --success-color: var(--green-color-1);
+  --warning-color: var(--orange-color-1);
 
   --app-bg-color: var(--dark-color-1);
   --app-text-color: var(--secondary-color);

@@ -1,13 +1,18 @@
 import 'normalize.css';
 import '../assets/scss/main.scss';
 
+import { useWallets } from '@state/wallets/hooks';
+
 import TheHeader from '@components/TheHeader/TheHeader';
 import TheFooter from '@components/TheFooter/TheFooter';
 
-import Routing from './Routing';
+import Routing from './components/Routing/Routing';
+import AppAlerts from './components/AppAlerts/AppAlerts';
 import { AppWrapperStyled, AppContentStyled } from './styleds/index';
 
 function App() {
+  useWallets();
+
   return (
     <AppWrapperStyled>
       <div>
@@ -15,6 +20,7 @@ function App() {
       </div>
 
       <AppContentStyled>
+        <AppAlerts />
         <Routing />
       </AppContentStyled>
 

@@ -9,3 +9,6 @@ export { default as UiField } from './UiField/UiField';
 
 export type { UiButtonProps } from './UiButton/UiButton';
 export { default as UiButton } from './UiButton/UiButton';
+
+export type { UiAlertProps } from './UiAlert/UiAlert';
+export { default as UiAlert } from './UiAlert/UiAlert';
