@@ -2,17 +2,23 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '@state/hooks';
 import NoSupportedWalletsAlert from './components/NoSupportedWalletsAlert';
+import UnsupportedChainAlert from './components/UnsupportedChainAlert';
 
 const AppAlerts: FC = () => {
-  const { isAnyWalletSupported } = useAppSelector(state => state.wallets);
+  const { isAnyWalletSupported, isSupportedChainEnabled } = useAppSelector(state => state.wallets);
 
-  const areAlertsEmpty = isAnyWalletSupported;
+  const areAlertsEmpty = isAnyWalletSupported && isSupportedChainEnabled;
 
   return (
     <AlertsWrapperStyled areAlertsEmpty={areAlertsEmpty}>
       { !isAnyWalletSupported && (
         <div className="app-alert-item">
           <NoSupportedWalletsAlert />
+        </div>
+      )}
+      { (isAnyWalletSupported && !isSupportedChainEnabled) && (
+        <div className="app-alert-item">
+          <UnsupportedChainAlert />
         </div>
       )}
     </AlertsWrapperStyled>

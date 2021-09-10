@@ -1,11 +1,15 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
+import { useAppSelector } from '@state/hooks';
 import { UiField, UiButton } from '@components/ui/index';
 import BorrowDetails from './components/BorrowDetails/BorrowDetails';
 
 const BorrowInterface: FC = () => {
   const [ collateralAmount, setCollateralAmount ] = useState('0');
   const [ borrowAssetAmount, setBorrowAssetAmount ] = useState('0');
+  const { isWalletConnecting, connectedAddress } = useAppSelector(state => state.wallets);
+
+  const isWalletConnected = !!connectedAddress;
 
   return (
     <BorrowInterfaceWrapperStyled>
@@ -52,7 +56,13 @@ const BorrowInterface: FC = () => {
             </div>
 
             <div>
-              <UiButton theme="primary">Initiate borrow</UiButton>
+              <UiButton
+                theme="primary"
+                isLoading={isWalletConnecting}
+                disabled={!isWalletConnected}
+              >
+                { isWalletConnected ? 'Initiate borrow' : 'Connect wallet' }
+              </UiButton>
             </div>
           </BorrowInterfaceFooterStyled>
         </div>

@@ -1,86 +1,46 @@
-import React, { FC, useState, useRef } from 'react';
+import  { FC } from 'react';
 import styled from 'styled-components';
+import { useAppSelector, useAppDispatch } from '@state/hooks';
+import { SUPPORTED_WALLETS } from '@config/wallets';
+import { UiButton } from '@components/ui/index';
+import { connectAccount } from '@state/wallets/thunks';
+import { shortenStr } from '@utils/filters';
 
-const METAMASK_LOGO = require('@assets/images/metamask-logo.svg').default;
+const wallet = SUPPORTED_WALLETS[0];
 
 const WalletManagementButton: FC = () => {
-  const [isWalletConnected, setIsWalletConnected] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const button = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const { connectedAddress, isWalletConnecting } = useAppSelector(state => state.wallets);
 
-  function handleClick(): void {
-    button.current?.blur();
-  }
-
-  function handleKeyPress(e: React.KeyboardEvent): void {
-    if (e.key === 'Enter') handleClick();
-  } 
+  const isWalletConnected = !!connectedAddress;
 
   return (
-    <ButtonWrapperStyled
-      ref={button}
-      tabIndex={0}
-      isWalletConnected={isWalletConnected}
-      onMouseEnter={ () => setIsHovered(true) }
-      onMouseLeave={ () => setIsHovered(false) }
-      onFocus={ () => setIsFocused(true) }
-      onBlur={ () => setIsFocused(false) }
-      onClick={handleClick}
-      onKeyPress={handleKeyPress}
+    <UiButton
+      disabled={isWalletConnecting || isWalletConnected}
+      onClick={() => dispatch(connectAccount())}
+      width="250px"
+      height="44px"
+      isLoading={isWalletConnecting}
     >
-      {isWalletConnected ? (
-        <div>
-          { isHovered || isFocused ? (
-            <span>Disconnect wallet</span>
-            ) : (
-            <span>0xC2fD...a3d6</span>
-          )}
-        </div>
-      ) : (
-        <div className="connect-wallet">
-          <img className="connect-wallet__logo" src={METAMASK_LOGO} alt='' style={{ width: '30px' }} />
+      <ButtonWrapperStyled>
+        {isWalletConnected ? (
           <div>
-            Connect Metamask
+            <span>{ shortenStr(connectedAddress, 6, 4) }</span>
           </div>
-        </div>
-      )}
-    </ButtonWrapperStyled>
+        ) : (
+          <div className="connect-wallet">
+            <img className="connect-wallet__logo" src={wallet.logo} alt='' style={{ width: '30px' }} />
+            <div>
+              Connect {wallet.name}
+            </div>
+          </div>
+        )}
+      </ButtonWrapperStyled>
+    </UiButton>
   ); 
 }
 
-const ButtonWrapperStyled = styled.div<{
-  isWalletConnected: boolean;
-}>`
-  background: var(--dark-color-2);
-  color: var(--alternative-color);
-  width: 220px;
-  height: 44px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.4s all;
-  user-select: none;
-  border: 1px solid transparent;
-  outline: none;
-
-  ${({ isWalletConnected }) => isWalletConnected ? `
-    &:hover, &:focus {
-      color: var(--danger-color);
-      border-color: var(--danger-color);
-    }
-  ` : `
-    &:hover, &:focus {
-      border-color: var(--alternative-color);
-    }
-  `}
-
-  &:active {
-    opacity: 0.8;
-  }
-
+const ButtonWrapperStyled = styled.div`
   & .connect-wallet {
     display: flex;
     align-items: center;

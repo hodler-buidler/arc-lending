@@ -1,25 +1,39 @@
 import { createReducer } from '@reduxjs/toolkit'
 import {
-  requestWalletConnection,
+  setIsWalletConnecting,
   setIsAnyWalletSupported,
+  setIsSupportedChainEnabled,
+  setConnectedAddress,
 } from './actions';
 
 export interface WalletsState {
   isAnyWalletSupported: boolean;
-  isConnectionInProgress: boolean;
+  connectedAddress: string;
+  isEthereumProviderConnected: boolean;
+  isWalletConnecting: boolean;
+  isSupportedChainEnabled: boolean;
 };
 
 export const initialState: WalletsState = {
   isAnyWalletSupported: true,
-  isConnectionInProgress: false,
+  isEthereumProviderConnected: false,
+  connectedAddress: '',
+  isWalletConnecting: true,
+  isSupportedChainEnabled: true,
 };
 
 export default createReducer(initialState, builder => 
   builder
-    .addCase(requestWalletConnection, (state) => {
-      state.isConnectionInProgress = true;
+    .addCase(setIsWalletConnecting, (state, { payload }) => {
+      state.isWalletConnecting = payload;
     })
     .addCase(setIsAnyWalletSupported, (state, { payload }) => {
       state.isAnyWalletSupported = payload;
+    })
+    .addCase(setIsSupportedChainEnabled, (state, { payload }) => {
+      state.isSupportedChainEnabled = payload;
+    })
+    .addCase(setConnectedAddress, (state, { payload }) => {
+      state.connectedAddress = payload;
     })
 );

@@ -1,5 +1,6 @@
 import { FC, ReactNode, useRef } from 'react';
 import styled from 'styled-components';
+import { UiHalfCirclesSpinner } from '@components/ui/index';
 
 export interface UiButtonProps {
   children: ReactNode;
@@ -7,6 +8,9 @@ export interface UiButtonProps {
   theme?: 'default' | 'primary';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
+  isLoading?: boolean;
+  height?: string;
+  width?: string;
   onClick?: () => unknown;
 };
 
@@ -16,7 +20,9 @@ const UiButton: FC<UiButtonProps> = ({
   theme = 'default',
   size = 'medium',
   disabled = false,
+  isLoading = false,
   onClick = () => {},
+  ...props
 }) => {
   const button = useRef<HTMLDivElement>(null);
 
@@ -26,21 +32,26 @@ const UiButton: FC<UiButtonProps> = ({
   }
 
   function handleKeyPress(e: React.KeyboardEvent): void {
-    if (e.key === 'Enter' && !disabled) handleClick()
+    if (e.key === 'Enter' && !disabled && !isLoading) handleClick()
   } 
 
   return (
     <ButtonWrapperStyled
       ref={button}
-      tabIndex={disabled ? -1 : 0}
+      tabIndex={disabled || isLoading ? -1 : 0}
       mode={mode}
       theme={theme}
       size={size}
       disabled={disabled}
-      onClick={disabled ? () => {} : handleClick}
+      isLoading={isLoading}
+      height={props.height}
+      width={props.width}
+      onClick={disabled || isLoading ? () => {} : handleClick}
       onKeyPress={handleKeyPress}
     >
-      { children }
+      { isLoading ? (
+        <UiHalfCirclesSpinner size="20px" />
+      ) : children }
     </ButtonWrapperStyled>
   ); 
 }
@@ -50,6 +61,9 @@ UiButton.defaultProps = {
   mode: 'default',
   theme: 'default',
   size: 'medium',
+  isLoading: false,
+  height: '',
+  width: '',
   onClick: () => {},
 }
 
@@ -57,7 +71,10 @@ const ButtonWrapperStyled = styled.div<{
   mode?: 'default';
   theme?: 'default' | 'primary';
   size?: 'small' | 'medium' | 'large';
+  height?: string;
+  width?: string;
   disabled?: boolean;
+  isLoading?: boolean;
 }>`
   display: inline-flex;
   align-items: center;
@@ -65,8 +82,10 @@ const ButtonWrapperStyled = styled.div<{
   box-sizing: border-box;
   user-select: none;
   transition: 0.2s all;
-  width: 100%;
+  width: ${({ width }) => width || '100%'};
+  height: ${({ height }) => height ? `${height} !important` : 'auto'};
   cursor: ${({ disabled }) => disabled ? "not-allowed" : "pointer"};
+  ${({ isLoading }) => isLoading ? "cursor: default;" : ""};
 
   ${({ size }) => size === 'small' ? `
     height: 36px;
@@ -86,7 +105,7 @@ const ButtonWrapperStyled = styled.div<{
     font-size: 20px;
   ` : ``}
 
-  ${({ mode, disabled, theme }) => mode === 'default' ? `
+  ${({ mode, disabled, theme, isLoading }) => mode === 'default' ? `
     --bg-color: transparent;
     --text-color: var(--alternative-color);
 
@@ -97,7 +116,9 @@ const ButtonWrapperStyled = styled.div<{
 
     ${disabled ? `
       opacity: 0.5;
-    ` :  `
+    ` : ``}
+    
+    ${ !disabled && !isLoading ? `
       &:hover, &:focus {
         opacity: 0.8;
       }
@@ -105,7 +126,7 @@ const ButtonWrapperStyled = styled.div<{
       &:active {
         opacity: 0.5;
       }
-    `}
+    ` : ``}
 
     ${theme === 'default' ? `
       --bg-color: var(--dark-color-2);
