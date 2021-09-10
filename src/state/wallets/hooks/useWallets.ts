@@ -57,7 +57,6 @@ function useWallets() {
 
   function handleChainChanged(chainId: string) {
     dispatch(setIsSupportedChainEnabled(isChainIdSupported(chainId)));
-    console.log(`kek:` + chainId)
   }
 }
 
