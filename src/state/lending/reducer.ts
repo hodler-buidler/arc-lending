@@ -1,9 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
+import type { Vault } from "@typings/lending";
 import {
   setMaxLTVRatio,
   setIsMaxLTVRatioLoading,
   setCollateralPriceUSD,
   setIsCollateralPriceLoading,
+  setAllVaults,
+  setAreVaultsLoading,
 } from './actions';
 
 export interface LendingState {
@@ -11,6 +14,8 @@ export interface LendingState {
   isMaxLTVRatioLoading: boolean;
   collateralPriceUSD: number;
   isCollateralPriceLoading: boolean;
+  allVaults: Vault[];
+  areVaultsLoading: boolean;
 };
 
 export const initialState: LendingState = {
@@ -18,6 +23,8 @@ export const initialState: LendingState = {
   isMaxLTVRatioLoading: true,
   collateralPriceUSD: 0,
   isCollateralPriceLoading: true,
+  allVaults: [],
+  areVaultsLoading: true,
 };
 
 export default createReducer(initialState, builder => 
@@ -33,5 +40,11 @@ export default createReducer(initialState, builder =>
     })
     .addCase(setIsCollateralPriceLoading, (state, { payload }) => {
       state.isCollateralPriceLoading = payload;
+    })
+    .addCase(setAllVaults, (state, { payload }) => {
+      state.allVaults = payload;
+    })
+    .addCase(setAreVaultsLoading, (state, { payload }) => {
+      state.areVaultsLoading = payload;
     })
 );

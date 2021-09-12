@@ -25,6 +25,8 @@ const Page: FC = () => {
 
 const VaultsPageWrapperStyled = styled.div`
   padding: 0 120px;
+  max-width: 1400px;
+  margin: auto;
 
   & .vaults-page-content {
     &__list {

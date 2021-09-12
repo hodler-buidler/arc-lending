@@ -5,15 +5,18 @@ import {
   setCollateralPriceUSD,
   setIsMaxLTVRatioLoading,
   setIsCollateralPriceLoading,
+  setAllVaults,
+  setAreVaultsLoading,
 } from '../actions';
 import {
   loadMaxLTVRatio,
   loadCollateralPrice,
+  loadVaults,
 } from '../thunks';
 
 function useLending() {
   const dispatch = useAppDispatch();
-  const { generalProvider } = useAppSelector(state => state.wallets);
+  const { generalProvider, walletProvider, isSupportedChainEnabled } = useAppSelector(state => state.wallets);
 
   useEffect(() => {
     if (generalProvider) {
@@ -25,7 +28,15 @@ function useLending() {
       dispatch(setIsMaxLTVRatioLoading(false));
       dispatch(setIsCollateralPriceLoading(false));
     }
-  }, [generalProvider])
+  }, [generalProvider]);
+
+  useEffect(() => {
+    if (walletProvider && isSupportedChainEnabled) {
+      dispatch(loadVaults());
+    } else {
+      dispatch(setAllVaults([]));
+    }
+  }, [walletProvider, isSupportedChainEnabled]);
 }
 
 export default useLending;

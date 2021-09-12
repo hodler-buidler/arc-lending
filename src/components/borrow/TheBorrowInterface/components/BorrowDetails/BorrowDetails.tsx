@@ -15,6 +15,8 @@ const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
     isCollateralPriceLoading,
   } = useAppSelector(state => state.lending);
 
+  const maxLTVRatioPercentage = maxLTVRatio * 100;
+
   return (
     <DetailsWrapperStyled>
       <DetailStyled className="detail">
@@ -39,7 +41,7 @@ const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
             <UiSkeleton width={50} height={16} />
           ) : (
             <span className="text-small text-alternative">
-              {maxLTVRatio}%
+              {maxLTVRatioPercentage}%
             </span>
           )}
         </div>

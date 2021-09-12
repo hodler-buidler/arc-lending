@@ -7,3 +7,4 @@ export const setIsSupportedChainEnabled = createAction<boolean>('wallets/setIsSu
 export const setIsEthereumProviderConnected = createAction<boolean>('wallets/setIsEthereumProviderConnected');
 export const setConnectedAddress = createAction<string>('wallets/setConnectedAddress');
 export const setGeneralProvider = createAction<BaseProvider | null>('wallets/setGeneralProvider');
+export const setWalletProvider = createAction<BaseProvider | null>('wallets/setWalletProvider');

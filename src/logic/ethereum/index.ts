@@ -7,3 +7,7 @@ export function makeGeneralProvider(chain: Chain): BaseProvider {
     process.env.REACT_APP_INFURA_PROJECT_ID,
   );
 }
+
+export function makeWalletProvider(): BaseProvider {
+  return new ethers.providers.Web3Provider(window.ethereum!, "any");
+}

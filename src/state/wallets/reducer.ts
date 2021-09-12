@@ -6,6 +6,7 @@ import {
   setIsSupportedChainEnabled,
   setConnectedAddress,
   setGeneralProvider,
+  setWalletProvider,
 } from './actions';
 
 export interface WalletsState {
@@ -15,6 +16,7 @@ export interface WalletsState {
   isWalletConnecting: boolean;
   isSupportedChainEnabled: boolean;
   generalProvider: BaseProvider | null;
+  walletProvider: BaseProvider | null;
 };
 
 export const initialState: WalletsState = {
@@ -24,6 +26,7 @@ export const initialState: WalletsState = {
   isWalletConnecting: true,
   isSupportedChainEnabled: true,
   generalProvider: null,
+  walletProvider: null,
 };
 
 export default createReducer(initialState, builder => 
@@ -42,5 +45,8 @@ export default createReducer(initialState, builder =>
     })
     .addCase(setGeneralProvider, (state, { payload }) => {
       state.generalProvider = payload;
+    })
+    .addCase(setWalletProvider, (state, { payload }) => {
+      state.walletProvider = payload;
     })
 );

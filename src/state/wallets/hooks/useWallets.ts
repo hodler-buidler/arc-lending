@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@state/hooks';
-import { makeGeneralProvider } from '@logic/ethereum';
+import { makeGeneralProvider, makeWalletProvider } from '@logic/ethereum';
 import { DEFAULT_CHAIN } from '@config/wallets';
 import {
   isAnyWalletSupported,
@@ -8,6 +8,7 @@ import {
   isChainIdSupported,
   getChainById,
 } from '@utils/wallets';
+import { setAreVaultsLoading } from '@state/lending/actions';
 import {
   setIsAnyWalletSupported,
   setIsSupportedChainEnabled,
@@ -15,11 +16,12 @@ import {
   setConnectedAddress,
   setIsWalletConnecting,
   setGeneralProvider,
+  setWalletProvider,
 } from  '../actions';
 
 function useWallets() {
   const dispatch = useAppDispatch();
-  const { isSupportedChainEnabled } = useAppSelector(state => state.wallets);
+  const { isSupportedChainEnabled, connectedAddress } = useAppSelector(state => state.wallets);
   const [ isMounted, setIsMounted ] = useState(false);
   const ethereum = window?.ethereum;
 
@@ -29,6 +31,7 @@ function useWallets() {
 
     if (!isAnyWalletSupported()) {
       dispatch(setGeneralProvider(makeGeneralProvider(DEFAULT_CHAIN)));
+      dispatch(setAreVaultsLoading(false));
     }
 
     // It seems like window.ethereum object takes time on page load to produce values
@@ -40,6 +43,10 @@ function useWallets() {
         setGeneralProviderAccordingToCurrentChain();
       }
       setIsMounted(true);
+
+      if (!isSupportedChainEnabled || !connectedAddress) {
+        dispatch(setAreVaultsLoading(false));
+      }
     }, 1000);
   }, []);
 
@@ -52,6 +59,11 @@ function useWallets() {
       }
     }
   }, [isSupportedChainEnabled]);
+
+  useEffect(() => {
+    const provider = connectedAddress ? makeWalletProvider() : null;
+    dispatch(setWalletProvider(provider));
+  }, [connectedAddress])
 
   useEffect(() => {
     ethereum?.on('connect', handleConnect);
@@ -85,6 +97,7 @@ function useWallets() {
 
   function setGeneralProviderAccordingToCurrentChain(): void {
     const enabledChain = getChainById(getCurrentChainId())!;
+    if (!enabledChain) return; 
     const provider = makeGeneralProvider(enabledChain);
     dispatch(setGeneralProvider(provider));
   }

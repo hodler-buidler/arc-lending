@@ -1,8 +1,22 @@
 import { FC } from 'react';
 import styled from 'styled-components';
+import type { Vault } from "@typings/lending";
+import { useAppSelector } from '@state/hooks';
 const ARCX_LOGO = require('@assets/images/assets-logos/arcx.svg').default;
 
-const VaultCard: FC = () => {
+type VaultCardProps = {
+  vault: Vault;
+}
+
+const VaultCard: FC<VaultCardProps> = ({
+  vault,
+}) => {
+  const { collateralPriceUSD } = useAppSelector(state => state.lending);
+
+  const currentCollateralValueUSD = collateralPriceUSD * vault.collateral;
+
+  const ltvRatioPercentage = (vault.debt / currentCollateralValueUSD) * 100;
+
   return (
     <VaultCardWrapperStyled>
       <div className="vault-info">
@@ -24,7 +38,7 @@ const VaultCard: FC = () => {
         <div className="vault-stats__stat">
           <div className="heading-4">
             <span className={true ? 'text-alternative' : 'text-disabled'}>
-              50%
+              {ltvRatioPercentage}%
             </span>
           </div>
           <div>
@@ -34,8 +48,8 @@ const VaultCard: FC = () => {
 
         <div className="vault-stats__stat">
           <div className="heading-4">
-            <span className={false ? 'text-alternative' : 'text-disabled'}>
-              &mdash; wETH
+            <span className='text-alternative'>
+              { vault.collateral } wETH
             </span>
           </div>
           <div>
@@ -45,8 +59,8 @@ const VaultCard: FC = () => {
 
         <div className="vault-stats__stat">
           <div className="heading-4">
-            <span className={false ? 'text-alternative' : 'text-disabled'}>
-              &mdash; ARCx
+            <span className='text-alternative'>
+              { vault.debt } ARCx
             </span>
           </div>
           <div>
