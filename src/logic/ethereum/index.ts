@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import type { Chain, BaseProvider } from '@typings/app';
+import type { Chain, BaseProvider, Web3Provider } from '@typings/app';
 
 export function makeGeneralProvider(chain: Chain): BaseProvider {
   return new ethers.providers.InfuraProvider(
@@ -8,6 +8,6 @@ export function makeGeneralProvider(chain: Chain): BaseProvider {
   );
 }
 
-export function makeWalletProvider(): BaseProvider {
+export function makeWalletProvider(): Web3Provider {
   return new ethers.providers.Web3Provider(window.ethereum!, "any");
 }

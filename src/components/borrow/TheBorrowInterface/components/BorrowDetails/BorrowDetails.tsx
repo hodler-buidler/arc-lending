@@ -4,10 +4,10 @@ import { useAppSelector } from '@state/hooks';
 import { UiSkeleton } from '@components/ui/index';
 
 interface BorrowDetailsProps {
-  currentLTVRatio: number;
+  currentLTVRatioPercentage: number;
 }
 
-const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
+const BorrowDetails: FC<BorrowDetailsProps> = ({ currentLTVRatioPercentage }) => {
   const { 
     maxLTVRatio,
     isMaxLTVRatioLoading,
@@ -17,6 +17,8 @@ const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
 
   const maxLTVRatioPercentage = maxLTVRatio * 100;
 
+  const isCurrentLTVRatioInvalid = currentLTVRatioPercentage > maxLTVRatioPercentage || currentLTVRatioPercentage <= 0;
+
   return (
     <DetailsWrapperStyled>
       <DetailStyled className="detail">
@@ -25,8 +27,8 @@ const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
         </div>
 
         <div>
-          <span className="text-small text-alternative">
-            {props.currentLTVRatio}%
+          <span className={`${isCurrentLTVRatioInvalid && 'text-danger'} text-small text-alternative`}>
+            { currentLTVRatioPercentage }%
           </span>
         </div>
       </DetailStyled>

@@ -12,4 +12,7 @@ export const SUPPORTED_CHAINS: readonly Chain[] = Object.freeze([
   RINKEBY_TESTNET_CHAIN,
 ]);
 
+
 export const DEFAULT_CHAIN = SUPPORTED_CHAINS[0];
+
+export const METAMASK_REJECTED_TRANSACTION_CODE = 4001;

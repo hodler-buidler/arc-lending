@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
-import { BaseProvider } from "@typings/app";
-import { Vault, VaultResponse } from "@typings/lending";
+import { BaseProvider, Web3Provider } from "@typings/app";
+import { Vault } from "@typings/lending";
 import { convertVaultResponseToVault } from '@utils/lending';
 import makeContract from './makeContract';
 
@@ -36,4 +36,26 @@ export async function fetchVaults(provider: BaseProvider): Promise<Vault[]> {
   }
 
   return fulfilledResults.map((result: any) => result.value).map(convertVaultResponseToVault);
+}
+
+type VaultDepositParams = {
+  depositAmount: number;
+  debtAmount: number;
+}
+
+export async function depositToVault(provider: Web3Provider, {
+  depositAmount,
+  debtAmount,
+}: VaultDepositParams) {
+  let contract = makeContract(provider);
+  contract = contract.connect(provider.getSigner());
+
+  const etherAmount = ethers.utils.parseUnits(String(depositAmount), 'ether');
+  const debtAmountWei = ethers.utils.parseUnits(String(debtAmount), 'ether');
+
+  const response = await contract.deposit(debtAmountWei, {
+    value: etherAmount,
+  });
+
+  return response;
 }

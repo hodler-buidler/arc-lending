@@ -1,15 +1,38 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
-import { useAppSelector } from '@state/hooks';
+import { useAppSelector, useAppDispatch } from '@state/hooks';
+import { useEtherBalance } from '@state/wallets/hooks';
+import { borrow } from '@state/lending/thunks';
 import { UiField, UiButton } from '@components/ui/index';
+import useBorrow from './hooks/useBorrow';
 import BorrowDetails from './components/BorrowDetails/BorrowDetails';
 
+
 const BorrowInterface: FC = () => {
+  const dispatch = useAppDispatch();
   const [ collateralAmount, setCollateralAmount ] = useState('0');
   const [ borrowAssetAmount, setBorrowAssetAmount ] = useState('0');
-  const { isWalletConnecting, connectedAddress, generalProvider } = useAppSelector(state => state.wallets);
+  const { isWalletConnecting, connectedAddress, isPerformingTransaction } = useAppSelector(state => state.wallets);
+  const etherBalance = useEtherBalance();
+
+  const {
+    currentLTVRatioPercentage,
+    isBorrowPossible,
+    maxAssetAmount,
+  } = useBorrow({ 
+    collateralAmount: Number(collateralAmount),
+    assetAmountUSD: Number(borrowAssetAmount),
+    etherBalance: etherBalance,
+  });
 
   const isWalletConnected = !!connectedAddress;
+
+  function handleBorrow() {
+    dispatch(borrow({
+      collateralAmount: Number(collateralAmount),
+      debtAmount: Number(borrowAssetAmount),
+    }));
+  }
 
   return (
     <BorrowInterfaceWrapperStyled>
@@ -19,6 +42,7 @@ const BorrowInterface: FC = () => {
             value={collateralAmount}
             onChange={ setCollateralAmount }
             numbersOnly
+            maxNumber={etherBalance}
             autoFocus
             rightAdditions={(
               <div className="text-alternative">ETH</div>
@@ -35,6 +59,7 @@ const BorrowInterface: FC = () => {
             value={borrowAssetAmount}
             onChange={ setBorrowAssetAmount }
             numbersOnly
+            maxNumber={maxAssetAmount}
             rightAdditions={(
               <div className="text-alternative">USD</div>
             )}
@@ -48,14 +73,15 @@ const BorrowInterface: FC = () => {
         <div className="borrow-interface__footer">
           <BorrowInterfaceFooterStyled>
             <div className="details">
-              <BorrowDetails currentLTVRatio={25} />
+              <BorrowDetails currentLTVRatioPercentage={currentLTVRatioPercentage} />
             </div>
 
             <div>
               <UiButton
                 theme="primary"
-                isLoading={isWalletConnecting}
-                disabled={!isWalletConnected || !generalProvider}
+                isLoading={isWalletConnecting || isPerformingTransaction}
+                disabled={!isBorrowPossible}
+                onClick={handleBorrow}
               >
                 { isWalletConnected ? 'Initiate borrow' : 'Connect wallet' }
               </UiButton>

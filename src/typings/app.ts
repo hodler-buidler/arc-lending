@@ -28,6 +28,7 @@ export interface Wallet {
 }
 
 export type BaseProvider = ethers.providers.BaseProvider;
+export type Web3Provider = ethers.providers.Web3Provider;
 
 export type AppMessage = {
   type: 'info' | 'success' | 'warn' | 'error',

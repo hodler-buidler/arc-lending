@@ -7,6 +7,7 @@ import {
   setIsCollateralPriceLoading,
   setAllVaults,
   setAreVaultsLoading,
+  addVault,
 } from './actions';
 
 export interface LendingState {
@@ -43,6 +44,9 @@ export default createReducer(initialState, builder =>
     })
     .addCase(setAllVaults, (state, { payload }) => {
       state.allVaults = payload;
+    })
+    .addCase(addVault, (state, { payload }) => {
+      state.allVaults.push(payload);
     })
     .addCase(setAreVaultsLoading, (state, { payload }) => {
       state.areVaultsLoading = payload;

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import type { BaseProvider } from '@typings/app';
+import type { BaseProvider, Web3Provider } from '@typings/app';
 import {
   setIsWalletConnecting,
   setIsAnyWalletSupported,
@@ -7,6 +7,8 @@ import {
   setConnectedAddress,
   setGeneralProvider,
   setWalletProvider,
+  incrementTransactionsCounter,
+  setIsPerformingTransaction,
 } from './actions';
 
 export interface WalletsState {
@@ -16,7 +18,9 @@ export interface WalletsState {
   isWalletConnecting: boolean;
   isSupportedChainEnabled: boolean;
   generalProvider: BaseProvider | null;
-  walletProvider: BaseProvider | null;
+  walletProvider: Web3Provider | null;
+  transactionsCounter: number;
+  isPerformingTransaction: boolean;
 };
 
 export const initialState: WalletsState = {
@@ -27,6 +31,8 @@ export const initialState: WalletsState = {
   isSupportedChainEnabled: true,
   generalProvider: null,
   walletProvider: null,
+  transactionsCounter: 0,
+  isPerformingTransaction: false,
 };
 
 export default createReducer(initialState, builder => 
@@ -48,5 +54,11 @@ export default createReducer(initialState, builder =>
     })
     .addCase(setWalletProvider, (state, { payload }) => {
       state.walletProvider = payload;
+    })
+    .addCase(incrementTransactionsCounter, (state) => {
+      state.transactionsCounter = state.transactionsCounter + 1;
+    })
+    .addCase(setIsPerformingTransaction, (state, { payload }) => {
+      state.isPerformingTransaction = payload;
     })
 );

@@ -7,3 +7,4 @@ export const setCollateralPriceUSD = createAction<number>('lending/setCollateral
 export const setIsCollateralPriceLoading = createAction<boolean>('lending/setIsCollateralPriceLoading');
 export const setAllVaults = createAction<Vault[]>('lending/setAllVaults');
 export const setAreVaultsLoading = createAction<boolean>('lending/setAreVaultsLoading');
+export const addVault = createAction<Vault>('lending/addVault');
