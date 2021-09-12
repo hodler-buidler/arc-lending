@@ -1,5 +1,5 @@
 # Demo
-https://nikitosgolubev.github.io/#/borrow
+https://nikitosgolubev.github.io/#/vaults
 
 # Scripts
 ```yarn dev``` - dev server
