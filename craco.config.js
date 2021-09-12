@@ -13,6 +13,8 @@ module.exports = {
         '@state': resolvePath('./src/state'),
         '@config': resolvePath('./src/config'),
         '@logic': resolvePath('./src/logic'),
+        '@abis': resolvePath('./src/abis'),
+        '@api': resolvePath('./src/api'),
       },
   },
 }

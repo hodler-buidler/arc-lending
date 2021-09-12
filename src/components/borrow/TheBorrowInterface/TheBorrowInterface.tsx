@@ -7,7 +7,7 @@ import BorrowDetails from './components/BorrowDetails/BorrowDetails';
 const BorrowInterface: FC = () => {
   const [ collateralAmount, setCollateralAmount ] = useState('0');
   const [ borrowAssetAmount, setBorrowAssetAmount ] = useState('0');
-  const { isWalletConnecting, connectedAddress } = useAppSelector(state => state.wallets);
+  const { isWalletConnecting, connectedAddress, generalProvider } = useAppSelector(state => state.wallets);
 
   const isWalletConnected = !!connectedAddress;
 
@@ -48,18 +48,14 @@ const BorrowInterface: FC = () => {
         <div className="borrow-interface__footer">
           <BorrowInterfaceFooterStyled>
             <div className="details">
-              <BorrowDetails
-                currentLTVRatio={25}
-                maxLTVRatio={50}
-                ethPriceUSD={1000}
-              />
+              <BorrowDetails currentLTVRatio={25} />
             </div>
 
             <div>
               <UiButton
                 theme="primary"
                 isLoading={isWalletConnecting}
-                disabled={!isWalletConnected}
+                disabled={!isWalletConnected || !generalProvider}
               >
                 { isWalletConnected ? 'Initiate borrow' : 'Connect wallet' }
               </UiButton>

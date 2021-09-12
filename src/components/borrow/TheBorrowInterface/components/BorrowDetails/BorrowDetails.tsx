@@ -1,13 +1,20 @@
 import { FC } from 'react';
 import styled from 'styled-components'
+import { useAppSelector } from '@state/hooks';
+import { UiSkeleton } from '@components/ui/index';
 
 interface BorrowDetailsProps {
   currentLTVRatio: number;
-  maxLTVRatio: number;
-  ethPriceUSD: number;
 }
 
 const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
+  const { 
+    maxLTVRatio,
+    isMaxLTVRatioLoading,
+    collateralPriceUSD,
+    isCollateralPriceLoading,
+  } = useAppSelector(state => state.lending);
+
   return (
     <DetailsWrapperStyled>
       <DetailStyled className="detail">
@@ -28,9 +35,13 @@ const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
         </div>
 
         <div>
-          <span className="text-small text-alternative">
-            {props.maxLTVRatio}%
-          </span>
+          { isMaxLTVRatioLoading ? (
+            <UiSkeleton width={50} height={16} />
+          ) : (
+            <span className="text-small text-alternative">
+              {maxLTVRatio}%
+            </span>
+          )}
         </div>
       </DetailStyled>
 
@@ -40,9 +51,13 @@ const BorrowDetails: FC<BorrowDetailsProps> = (props) => {
         </div>
 
         <div>
-          <span className="text-small text-alternative">
-            ${ props.ethPriceUSD } USD
-          </span>
+          { isCollateralPriceLoading ? (
+            <UiSkeleton width={80} height={16} />
+          ) : (
+            <span className="text-small text-alternative">
+              ${ collateralPriceUSD } USD
+            </span>
+          )}
         </div>
       </DetailStyled>
     </DetailsWrapperStyled>

@@ -1,3 +1,5 @@
+import { ethers } from 'ethers';
+
 export enum WalletType {
   MetaMask,
 }
@@ -13,6 +15,7 @@ export enum ChainId {
 export interface Chain {
   id: ChainId;
   name: string;
+  endpoint: string;
 }
 
 export interface Wallet {
@@ -22,4 +25,11 @@ export interface Wallet {
   installable: boolean;
   installLink: string;
   isSupported: () => boolean;
+}
+
+export type BaseProvider = ethers.providers.BaseProvider;
+
+export type AppMessage = {
+  type: 'info' | 'success' | 'warn' | 'error',
+  content: string;
 }

@@ -1,9 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit'
+import type { BaseProvider } from '@typings/app';
 import {
   setIsWalletConnecting,
   setIsAnyWalletSupported,
   setIsSupportedChainEnabled,
   setConnectedAddress,
+  setGeneralProvider,
 } from './actions';
 
 export interface WalletsState {
@@ -12,6 +14,7 @@ export interface WalletsState {
   isEthereumProviderConnected: boolean;
   isWalletConnecting: boolean;
   isSupportedChainEnabled: boolean;
+  generalProvider: BaseProvider | null;
 };
 
 export const initialState: WalletsState = {
@@ -20,6 +23,7 @@ export const initialState: WalletsState = {
   connectedAddress: '',
   isWalletConnecting: true,
   isSupportedChainEnabled: true,
+  generalProvider: null,
 };
 
 export default createReducer(initialState, builder => 
@@ -35,5 +39,8 @@ export default createReducer(initialState, builder =>
     })
     .addCase(setConnectedAddress, (state, { payload }) => {
       state.connectedAddress = payload;
+    })
+    .addCase(setGeneralProvider, (state, { payload }) => {
+      state.generalProvider = payload;
     })
 );

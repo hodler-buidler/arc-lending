@@ -10,6 +10,8 @@
       "@state/*": ["src/state/*"],
       "@config/*": ["src/config/*"],
       "@logic/*": ["src/logic/*"],
+      "@abis/*": ["src/abis/*"],
+      "@api/*": ["src/api/*"],
     },
     "target": "es5",
     "lib": [

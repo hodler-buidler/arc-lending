@@ -15,3 +15,6 @@ export { default as UiAlert } from './UiAlert/UiAlert';
 
 export type { UiHalfCirclesSpinnerProps } from './UiHalfCirclesSpinner/UiHalfCirclesSpinner';
 export { default as UiHalfCirclesSpinner } from './UiHalfCirclesSpinner/UiHalfCirclesSpinner';
+
+export type { UiSkeletonProps } from './UiSkeleton/UiSkeleton';
+export { default as UiSkeleton } from './UiSkeleton/UiSkeleton';
